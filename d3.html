@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Indian State Map with D3.js</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        #chart div {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 15px 3px 0 0;
+            /* margin-right: 3px;
+            margin-top: 15px; */
+            /* color: #ff8102; */
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            pointer-events: none;
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="reset" style="display:none;">Show Full Map</button>
+    <div id="chart"></div>
+    <svg width="800" height="600"></svg>
+    <div class="tooltip"></div>
+
+    <script>
+        // Set up the SVG dimensions
+        const width = 1000;
+        const height = 800;
+
+        const svg = d3.select("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const projection = d3.geoMercator()
+            .center([78.9629, 23.5937])  // Center of India
+            .scale(1000)  // Scale the map
+            .translate([width / 2, height / 2]);
+
+        const path = d3.geoPath().projection(projection);
+        const tooltip = d3.select(".tooltip");
+        // var tooltip = d3.select("body")
+        //     .append("div")
+        //     .style("position", "absolute")
+        //     .style("z-index", "10")
+        //     .style("visibility", "hidden")
+        //     .style("background", "#000")
+        //     .text("a simple tooltip");
+        // var data = [4, 8, 15, 16, 23, 42];
+
+        // d3.select("body")
+        //     .selectAll("div")
+        //     .data(data)
+        //     .enter().append("div")
+        //     .style("width", function (d) { return x(d) + "px"; })
+        //     .on("mouseover", function (d) { tooltip.text(d); return tooltip.style("visibility", "visible"); })
+        //     .on("mousemove", function () { return tooltip.style("top", (d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px"); })
+        //     .on("mouseout", function () { return tooltip.style("visibility", "hidden"); });
+
+        // Load GeoJSON data for Indian states
+        d3.json("indian_state.json").then(function (geojson) {
+            const states = svg.selectAll("path")
+                .data(geojson.features)
+                .enter().append("path")
+                .attr("d", path)
+                .attr("fill", "steelblue")
+                .attr("stroke", "#fff")
+                .attr("stroke-width", "1")
+                .on("mouseover", function (event, d) {
+                    tooltip.style("visibility", "visible")
+                        .text(d.properties.NAME_1);
+                })
+                .on("mousemove", function (event) {
+                    tooltip.style("top", (event.pageY - 10) + "px")
+                        .style("left", (event.pageX + 10) + "px");
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden");
+                })
+                .on("click", function (event, d) {
+                    showState(d);
+                });
+
+
+            function showState(stateData) {
+                // Hide other states
+
+                svg.selectAll("path").remove();
+                d3.select('#col')
+
+
+                // github contribution graph
+                var colorMap = d3.interpolateRgb(
+                    d3.rgb('#ffd4a9'),
+                    d3.rgb('#ffA500')
+                );
+
+                d3.select('#chart')
+                    .selectAll("div")
+                    .data([0.0, 0.07, 0.25, 0.42, 0.58, 0.72, 0.97])
+                    .enter()
+                    .append("div")
+                    .style("background-color", (d) => {
+                        return d == 0 ? '#eee' : colorMap(d);
+                    });
+
+                // Draw the selected state
+                svg.append("path")
+                    .datum(stateData)
+                    .attr("d", path)
+                    .attr("fill", "orange")
+                    .attr("stroke", "#fff")
+                    .attr("stroke-width", "1");
+
+                console.log(stateData);
+                // if(stateData.properties.NAME_1 === 'Uttar Pradesh' && stateData.properties.TYPE_1 === 'State'){
+                // d3.json('UttarPradesh.json').then(function(geojson) {
+                //     const district = svg.selectAll("path")
+                //     .data(geojson.features)
+                //     .enter()
+                //     .append('path')
+                //     .attr("d", path)
+                //         .attr("fill", "orange")
+                //         .attr("stroke", "black")
+                //         .attr("stroke-width", "0.25")
+                // });
+                // }else if(stateData.properties.NAME_1 === 'Madhya Pradesh' && stateData.properties.TYPE_1 === 'State') {
+                //     d3.json('MadhyaPradesh.json').then(function(geojson) {
+                //     const district = svg.selectAll("path")
+                //     .data(geojson.features)
+                //     .enter()
+                //     .append('path')
+                //     .attr("d", path)
+                //         .attr("fill", "orange")
+                //         .attr("stroke", "black")
+                //         .attr("stroke-width", "0.25")
+                // });
+                // }
+
+                /* 
+                Available State District Data - UP, MP, TamilNadu, Rajasthan
+                */
+                const x = stateData.properties.NAME_1.split(' ').join('');
+                console.log(x);
+                d3.json(`/districts/${x}.geojson`).then(function (geojson) {
+                    const district = svg.selectAll("path")
+                        .data(geojson.features)
+                        .enter()
+                        .append('path')
+                        .attr("d", path)
+                        .attr("fill", "orange")
+                        .attr("stroke", "black")
+                        .attr("stroke-width", "0.25")
+                        .on("mouseover", function (event, d) {
+                            tooltip.style("visibility", "visible")
+                            .html(`
+                                    <strong>District Name:</strong> ${d.properties.Dist_Name}<br/>
+                                    <strong>State Code:</strong> ${d.properties.State_Code}<br/>
+                                    <strong>District Code:</strong> ${d.properties.Dist_Code}<br/>
+                                `); // Assuming district name is stored in NAME_2
+                        })
+                        .on("mousemove", function (event) {
+                            tooltip.style("top", (event.pageY - 10) + "px")
+                                .style("left", (event.pageX + 10) + "px");
+                        })
+                        .on("mouseout", function () {
+                            tooltip.style("visibility", "hidden");
+                        });
+                });
+                // Show the reset button
+                d3.select("#reset").style("display", "block");
+            }
+
+            // Reset to full map view
+            d3.select("#reset").on("click", function () {
+                svg.selectAll("path").remove();
+                d3.select("#reset").style("display", "none");
+
+                // Redraw the full map
+                svg.selectAll("path")
+                    .data(geojson.features)
+                    .enter().append("path")
+                    .attr("d", path)
+                    .attr("fill", "steelblue")
+                    .attr("stroke", "#fff")
+                    .attr("stroke-width", "0.25")
+                    .on("mouseover", function (event, d) {
+                        tooltip.style("visibility", "visible")
+                            .text(d.properties.NAME_1);
+                    })
+                    .on("mousemove", function (event) {
+                        tooltip.style("top", (event.pageY - 10) + "px")
+                            .style("left", (event.pageX + 10) + "px");
+                    })
+                    .on("mouseout", function () {
+                        tooltip.style("visibility", "hidden");
+                    })
+                    .on("click", function (event, d) {
+                        showState(d);
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>
