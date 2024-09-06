@@ -17,25 +17,208 @@
         }
         .tooltip {
             position: absolute;
-            background-color: white;
-            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.8); 
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+            max-width: 250px;
             pointer-events: none;
             visibility: hidden;
         }
+        .tooltip h4 {
+            margin: 0 0 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ccc;
+            color: #333;
+        }
+        .tooltip p {
+            margin: 5px 0;
+        }
+        .tooltip strong {
+            color: #0066cc;
+        }
+        body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.citizen-corner, .water-supply-status {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.search-box {
+    flex: 1;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+}
+
+.search-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.water-quality {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    flex: 1;
+    min-width: 250px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.stat-percentage {
+    font-size: 18px;
+    color: #666;
+}
+
+.stat-increment {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.blue {
+    color: #1e88e5;
+}
+
+.orange {
+    color: #ff8102;
+}
+
+.green {
+    color: #4CAF50;
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+    }
+
+    .stat-box {
+        min-width: 100%;
+    }
+}
     </style>
 </head>
 
 <body>
     <button id="reset" style="display:none;">Show Full Map</button>
-    <div id="chart"></div>
-    <svg width="800" height="600"></svg>
+    <div id="chart" style="margin: 0;"></div>
+    <svg width="800" height="00"></svg>
     <div class="tooltip"></div>
+
+    <div class="container">
+        <section class="citizen-corner">
+            <h2 class="section-title">Citizen Corner:</h2>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Know status of JJM implementation in your village: Select State -> District-> Village">
+                    <button class="search-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </div>
+                <div class="water-quality">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                    <span>know water quality of your village</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="water-supply-status">
+            <h2 class="section-title"><span class="blue">India</span> | <span class="orange">Status of tap water supply in rural homes</span></h2>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <h3>Total number of households (HHs)</h3>
+                    <p class="stat-value">19,33,33,622</p>
+                </div>
+                <div class="stat-box green">
+                    <h3>Households with tap water connections as on 15 Aug 2019</h3>
+                    <p class="stat-value">3,23,62,838</p>
+                    <p class="stat-percentage">(16.74%)</p>
+                </div>
+                <div class="stat-box blue">
+                    <h3>Remaining households</h3>
+                    <p class="stat-value">16,09,70,784</p>
+                </div>
+            </div>
+            <div class="stats-container">
+                <div class="stat-box blue">
+                    <h3>Households provided with tap water connection since launch of the Mission</h3>
+                    <p class="stat-value">11,89,11,446 <span class="stat-percentage">(73.87%)</span></p>
+                </div>
+                <div class="stat-box blue">
+                    <h3>Households with tap water connections as on date</h3>
+                    <p class="stat-increment">+28,850</p>
+                    <p class="stat-value">15,12,74,284 <span class="stat-percentage">( 78.25% )</span></p>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <script>
         // Set up the SVG dimensions
-        const width = 1000;
+        const width = 1600;
         const height = 800;
 
         const svg = d3.select("svg")
@@ -49,26 +232,8 @@
 
         const path = d3.geoPath().projection(projection);
         const tooltip = d3.select(".tooltip");
-        // var tooltip = d3.select("body")
-        //     .append("div")
-        //     .style("position", "absolute")
-        //     .style("z-index", "10")
-        //     .style("visibility", "hidden")
-        //     .style("background", "#000")
-        //     .text("a simple tooltip");
-        // var data = [4, 8, 15, 16, 23, 42];
-
-        // d3.select("body")
-        //     .selectAll("div")
-        //     .data(data)
-        //     .enter().append("div")
-        //     .style("width", function (d) { return x(d) + "px"; })
-        //     .on("mouseover", function (d) { tooltip.text(d); return tooltip.style("visibility", "visible"); })
-        //     .on("mousemove", function () { return tooltip.style("top", (d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px"); })
-        //     .on("mouseout", function () { return tooltip.style("visibility", "hidden"); });
-
         // Load GeoJSON data for Indian states
-        d3.json("indian_state.json").then(function (geojson) {
+        d3.json("india_states.geojson").then(function (geojson) {
             const states = svg.selectAll("path")
                 .data(geojson.features)
                 .enter().append("path")
@@ -78,7 +243,7 @@
                 .attr("stroke-width", "1")
                 .on("mouseover", function (event, d) {
                     tooltip.style("visibility", "visible")
-                        .text(d.properties.NAME_1);
+                        .text(d.properties.ST_NM);
                 })
                 .on("mousemove", function (event) {
                     tooltip.style("top", (event.pageY - 10) + "px")
@@ -123,34 +288,10 @@
                     .attr("stroke-width", "1");
 
                 console.log(stateData);
-                // if(stateData.properties.NAME_1 === 'Uttar Pradesh' && stateData.properties.TYPE_1 === 'State'){
-                // d3.json('UttarPradesh.json').then(function(geojson) {
-                //     const district = svg.selectAll("path")
-                //     .data(geojson.features)
-                //     .enter()
-                //     .append('path')
-                //     .attr("d", path)
-                //         .attr("fill", "orange")
-                //         .attr("stroke", "black")
-                //         .attr("stroke-width", "0.25")
-                // });
-                // }else if(stateData.properties.NAME_1 === 'Madhya Pradesh' && stateData.properties.TYPE_1 === 'State') {
-                //     d3.json('MadhyaPradesh.json').then(function(geojson) {
-                //     const district = svg.selectAll("path")
-                //     .data(geojson.features)
-                //     .enter()
-                //     .append('path')
-                //     .attr("d", path)
-                //         .attr("fill", "orange")
-                //         .attr("stroke", "black")
-                //         .attr("stroke-width", "0.25")
-                // });
-                // }
-
                 /* 
                 Available State District Data - UP, MP, TamilNadu, Rajasthan
                 */
-                const x = stateData.properties.NAME_1.split(' ').join('');
+                const x = stateData.properties.ST_NM.split(' ').join('');
                 console.log(x);
                 d3.json(`/districts/${x}.geojson`).then(function (geojson) {
                     const district = svg.selectAll("path")
@@ -161,12 +302,14 @@
                         .attr("fill", "orange")
                         .attr("stroke", "black")
                         .attr("stroke-width", "0.25")
+                        .attr("width", 800)
+                        .attr("height", 600)
                         .on("mouseover", function (event, d) {
                             tooltip.style("visibility", "visible")
                             .html(`
-                                    <strong>District Name:</strong> ${d.properties.Dist_Name}<br/>
-                                    <strong>State Code:</strong> ${d.properties.State_Code}<br/>
-                                    <strong>District Code:</strong> ${d.properties.Dist_Code}<br/>
+                                    <h4>${d.properties.Dist_Name}</h4>
+                                    <p><strong>State Code:</strong> ${d.properties.State_Code}</p>
+                                    <p><strong>District Code:</strong> ${d.properties.Dist_Code}</p>
                                 `); // Assuming district name is stored in NAME_2
                         })
                         .on("mousemove", function (event) {
@@ -185,7 +328,7 @@
             d3.select("#reset").on("click", function () {
                 svg.selectAll("path").remove();
                 d3.select("#reset").style("display", "none");
-
+                window.location.reload();
                 // Redraw the full map
                 svg.selectAll("path")
                     .data(geojson.features)
